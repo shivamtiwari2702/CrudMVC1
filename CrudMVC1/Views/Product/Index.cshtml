@@ -1,0 +1,85 @@
+﻿@model IPagedList<CrudMVC1.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<h2>Index</h2>
+
+<style>
+    .pagination li {
+        display: inline;
+        margin-right: 5px;
+    }
+
+    .pagination li a {
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .pagination li.active a {
+        background-color: #007bff;
+        color: #fff;
+    }
+</style>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<table class="table table-bordered">
+    <tr>
+        <th class="bg-info text-center">
+            @Html.DisplayNameFor(model => model.First().ProductId)
+        </th>
+        <th class="bg-info text-center">
+            @Html.DisplayNameFor(model => model.First().ProductName)
+        </th>
+        <th class="bg-info text-center">
+            @Html.DisplayNameFor(model => model.First().Category.CategoryId)
+        </th>
+        <th class="bg-info text-center">
+            @Html.DisplayNameFor(model => model.First().Category.CategoryName)
+        </th>
+        <th class="bg-info text-center">Actions</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Category.CategoryId)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+            <td class="text-center">
+                @Html.ActionLink("Edit", "Edit", new { id = item.ProductId }, new { @class = "btn btn-success me-2" })
+                @Html.ActionLink("Details", "Details", new { id = item.ProductId }, new { @class = "btn btn-secondary me-2" })
+                @Html.ActionLink("Delete", "Delete", new { id = item.ProductId }, new { @class = "btn btn-danger me-2" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="d-flex justify-content-end">
+    <ul class="pagination">
+        @Html.PagedListPager(
+            Model,
+            page => Url.Action("Index", new { page }),
+            PagedListRenderOptions.OnlyShowFivePagesAtATime
+        )
+    </ul>
+</div>

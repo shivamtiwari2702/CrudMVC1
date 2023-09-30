@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CrudMVC1.Models.Category>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<table class="table table-bordered">
+    <tr>
+        <th class="bg-info text-center">
+            @Html.DisplayNameFor(model => model.CategoryId)
+        </th>
+        <th class="bg-info text-center">
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </th>
+        <th class="bg-info text-center">Actions</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td class="text-center">
+            @Html.DisplayFor(modelItem => item.CategoryId)
+        </td>
+        <td class="text-center">
+            @Html.DisplayFor(modelItem => item.CategoryName)
+        </td>
+        <td class="text-center">
+            @Html.ActionLink("Edit", "Edit", new { id = item.CategoryId }, new { @class = "btn btn-success me-2" }) 
+            @Html.ActionLink("Details", "Details", new { id = item.CategoryId }, new { @class = "btn btn-secondary me-2" }) 
+            @Html.ActionLink("Delete", "Delete", new { id = item.CategoryId }, new { @class = "btn btn-danger me-2" })
+        </td>
+    </tr>
+}
+
+</table>
