@@ -21,18 +21,16 @@ namespace CrudMVC1.Controllers
             db = new ApplicationDbContext();
         }
 
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page) 
         {
             int pageSize = 10;
-            int pageNumber = (page ?? 1);
+            int pageNumber = page ?? 1;
+            int itemsToSkip = (pageNumber - 1) * pageSize;
+ 
             var products = db.Products.Include("Category").OrderBy(p => p.ProductId);
-            var pageProducts = products.ToPagedList(pageNumber, pageSize);
-            if(pageNumber == 9)
-            {
-                pageSize = 90;
-                pageNumber = 9;
-                pageProducts = products.ToPagedList(pageNumber, pageSize); 
-            }
+
+            var pageProducts = products.Skip(itemsToSkip).Take(pageSize).ToList();
+
             return View(pageProducts);
         }
 
