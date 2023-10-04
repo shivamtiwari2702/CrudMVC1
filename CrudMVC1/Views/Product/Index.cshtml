@@ -1,33 +1,19 @@
-﻿@model IPagedList<CrudMVC1.Models.Product>
+@using System
+@using System.Web
+@using System.Web.Mvc
+@using CrudMVC1.Models 
+
+@model IEnumerable<CrudMVC1.Models.Product>
 
 @{
     ViewBag.Title = "Index";
+    var currentPage = ViewBag.Page ?? 1;
+    var pageSize = 10;
+    var totalItems = Model.Count();
+    var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
 }
 
-@using PagedList;
-@using PagedList.Mvc;
-
 <h2>Index</h2>
-
-<style>
-    .pagination li {
-        display: inline;
-        margin-right: 5px;
-    }
-
-    .pagination li a {
-        padding: 5px 10px;
-        border: 1px solid #ccc;
-        background-color: #fff;
-        color: #333;
-        text-decoration: none;
-    }
-
-    .pagination li.active a {
-        background-color: #007bff;
-        color: #fff;
-    }
-</style>
 
 <p>
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
@@ -35,16 +21,16 @@
 <table class="table table-bordered">
     <tr>
         <th class="bg-info text-center">
-            @Html.DisplayNameFor(model => model.First().ProductId)
+            ProductId
         </th>
         <th class="bg-info text-center">
-            @Html.DisplayNameFor(model => model.First().ProductName)
+            ProductName
         </th>
         <th class="bg-info text-center">
-            @Html.DisplayNameFor(model => model.First().Category.CategoryId)
+            CategoryId
         </th>
         <th class="bg-info text-center">
-            @Html.DisplayNameFor(model => model.First().Category.CategoryName)
+            CategoryName
         </th>
         <th class="bg-info text-center">Actions</th>
     </tr>
@@ -71,15 +57,18 @@
             </td>
         </tr>
     }
-
 </table>
 
 <div class="d-flex justify-content-end">
     <ul class="pagination">
-        @Html.PagedListPager(
-            Model,
-            page => Url.Action("Index", new { page }),
-            PagedListRenderOptions.OnlyShowFivePagesAtATime
-        )
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(i == currentPage ? "active": "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+            </li>
+        }
     </ul>
 </div>
+
+
+
